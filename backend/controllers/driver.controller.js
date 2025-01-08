@@ -72,7 +72,7 @@ export const loginDriver = async (req, res, next) => {
 
         res.cookie('token', token);
 
-        res.status(201).json({ token, driver });
+        res.status(200).json({ token, driver });
     }
     catch (e) {
         console.log(e);
@@ -84,11 +84,20 @@ export const getProfile = async(req,res,next) =>{
 }
 
 export const logoutDriver = async(req,res,next) =>{
-    const token =  req.cookies.token || req.headers.authorization?.split(' ')[1];
-        
-    await blackListTokenModel.create({token});
+    const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
     
     res.clearCookie(token);
-    
-    res.status(200).json({message:"logged Out Successfully"});
+    // console.log(token);
+    try {
+        // Check if the token already exists in the blacklist
+        const existingToken = await blackListTokenModel.findOne({ token });
+        if (!existingToken) {
+            // Add the token to the blacklist if not already present
+            await blackListTokenModel.create({ token });
+        }
+        return res.status(200).json({ message: "logged Out Successfully" });
+    }
+    catch (e) {
+        console.log(e);
+    }
 }

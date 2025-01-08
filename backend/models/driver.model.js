@@ -35,10 +35,10 @@ const driverSchema = new mongoose.Schema({
         default: "available"
     },
     location: {
-        latitude: {
+        lat: {
             type: Number
         },
-        longitude: {
+        lng: {
             type: Number
         }
     },
@@ -61,7 +61,7 @@ const driverSchema = new mongoose.Schema({
         vehicleType: {
             type: String,
             required: true,
-            enum: ["Truck", "Van", "Mini Truck", "Container Truck", "Trailer", "Three Wheeler"]
+            enum: ["Truck", "Van", "Mini Truck", "Container Truck", "Trailer"]
         }
     }
 });

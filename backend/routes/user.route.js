@@ -25,6 +25,15 @@ userController.loginUser
 router.get("/getProfile",authUser,userController.getProfile
 );
 
+router.post("/updateProfile",
+     [
+     authUser,
+     body('fullName.firstName').optional().isLength({min:3}).withMessage('Must be atleast 3 characters'),
+     body('fullName.lastName').optional().isLength({min:3}).withMessage('Must be atleast 3 characters')
+     ],
+     userController.updateProfile
+);
+
 router.get("/logout",authUser,userController.logoutUser
 );
 

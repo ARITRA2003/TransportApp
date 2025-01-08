@@ -5,6 +5,9 @@ import cookieParser from "cookie-parser";
 import { connectToMongo } from "./db/db.js";
 import userRouter from "./routes/user.route.js"
 import driverRouter from "./routes/driver.route.js";
+import mapRouter from "./routes/map.route.js";
+import transportRouter from "./routes/Transport.route.js";
+import fareCalculationRouter  from "./routes/fare.route.js";
 
 dotenv.config();
 
@@ -21,6 +24,9 @@ app.use(cookieParser());
 //Routes
 app.use("/user",userRouter);
 app.use("/driver",driverRouter);
+app.use("/map",mapRouter);
+app.use("/ride",transportRouter);
+app.use("/fare",fareCalculationRouter);
 
 app.get("/",(req,res) => {
     res.send("Hello, world");

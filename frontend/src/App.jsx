@@ -1,34 +1,56 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react'
+import { Route, Routes } from "react-router-dom"
+import UserLogin from './screens/UserLogin'
+import UserSignUp from './screens/UserSignUp'
+import DriverLogin from './screens/DriverLogin'
+import DriverSignUp from './screens/DriverSignUp'
+import Start from './screens/Start'
+import UserProtectedWrapper from './screens/UserProtectedWrapper'
+import UserHome from './screens/UserHome'
+import DriverHome from './screens/DriverHome'
+import DriverWrapper from './screens/DriverProtectedWrapper'
+import UserTrackOrders from './screens/UserTrackOrders'
+import UserManageProfile from './screens/UserManageProfile'
+import DriverManageProfile from './screens/DriverManageProfile'
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App = () => {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Routes>
+      <Route path='/' element={<Start />} />
+
+      <Route path='/user-login' element={<UserLogin />} />
+      <Route path='/user-signup' element={<UserSignUp />} />
+      <Route path='/user-home' element={
+        <UserProtectedWrapper>
+          <UserHome />
+        </UserProtectedWrapper>}
+      />
+      <Route path='/user-track-orders' element={
+        <UserProtectedWrapper>
+          <UserTrackOrders />
+        </UserProtectedWrapper>}
+      />
+      <Route path='/user-manage-profile' element={
+        <UserProtectedWrapper>
+          <UserManageProfile />
+        </UserProtectedWrapper>}
+      />
+
+
+      <Route path='/driver-login' element={<DriverLogin />} />
+      <Route path='/driver-signup' element={<DriverSignUp />} />
+      <Route path='/driver-home' element={
+        <DriverWrapper>
+          <DriverHome />
+        </DriverWrapper>}
+      />
+      <Route path='/driver-manage-profile' element={
+        <DriverWrapper>
+          <DriverManageProfile/>
+        </DriverWrapper>
+      }
+      />
+    </Routes>
   )
 }
 
