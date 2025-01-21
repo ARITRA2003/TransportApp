@@ -37,8 +37,8 @@ export const updateUser = async(userId,updationProfileData) => {
         }
         return updatedUser;
     } catch (error) {
-        // Handle any errors during user creation (e.g., validation or database errors)
-        throw new Error(`User creation failed: ${error.message}`);
+        // Handle any errors during user updation (e.g., validation or database errors)
+        throw new Error(`User updation failed: ${error.message}`);
     }
 }
 

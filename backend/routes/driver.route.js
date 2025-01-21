@@ -30,6 +30,19 @@ driverController.loginDriver
 router.get("/getProfile",authDriver,driverController.getProfile
 );
 
+router.post("/updateProfile",
+    [
+        authDriver,
+        body('fullName.firstName').optional().isLength({min:3}).withMessage('Must be atleast 3 characters'),
+        body('fullName.lastName').optional().isLength({min:3}).withMessage('Must be atleast 3 characters'),
+        body('vehicle.color').optional().isLength({min:3}).withMessage('Must be atleast 3 characters'),
+        body('vehicle.plate').optional().isLength({min:3}).withMessage('Must be atleast 3 characters'),
+        body('vehicle.capacity').optional().isInt({min:10}).withMessage('Mimimum Capacity should be 10'),
+        body('vehicle.vehicleType').optional().isIn(["Truck", "Van", "Mini Truck", "Container Truck", "Trailer", "Three Wheeler"]).withMessage('Not a valid vehicle Type')
+    ],
+    driverController.updateProfile
+)
+
 router.get("/logout",authDriver,driverController.logoutDriver
 );
 

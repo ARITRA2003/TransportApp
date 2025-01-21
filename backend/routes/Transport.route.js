@@ -14,16 +14,16 @@ router.post(
       .withMessage('Weight must be a numeric value')
       .isFloat({ gt: 0 })
       .withMessage('Weight must be greater than 0'),
-    body('origin')
+    body('originAddress')
       .isString()
-      .withMessage('Origin must be a valid string')
+      .withMessage('Origin Address must be a valid string')
       .isLength({ min: 3 })
-      .withMessage('Origin must be at least 3 characters long'),
-    body('destination')
+      .withMessage('Origin Address must be at least 3 characters long'),
+    body('destinationAddress')
       .isString()
-      .withMessage('Destination must be a valid string')
+      .withMessage('Destination Address must be a valid string')
       .isLength({ min: 3 })
-      .withMessage('Destination must be at least 3 characters long'),
+      .withMessage('Destination Address must be at least 3 characters long'),
     body('vehicleType')
       .isString()
       .withMessage('Vehicle type must be a valid string')
@@ -49,9 +49,68 @@ router.post(
   TransportController.confirmTransportRide
 );
 
-router.get("/user-rides",
+router.post("/start-ride",[
+  authDriver,
+  body('rideId').isMongoId().withMessage("Not a Ride Id"),
+  body('status').
+  isIn(["Waiting For Driver","Accepted","Goods Collected","En-route","Goods Delivered"]).
+  withMessage("Status is not valid")
+  ],
+  TransportController.startTransportRide
+);
+
+router.post(
+  "/goods-collected",
+  [
+    authDriver,
+    body("rideId").isMongoId().withMessage("Not a valid Ride ID"),
+    body("status")
+      .isIn([
+        "Waiting For Driver",
+        "Accepted",
+        "Goods Collected",
+        "En-route",
+        "Goods Delivered",
+      ])
+      .withMessage("Status is not valid"),
+    body("originOtp")
+      .isLength({ min: 6, max: 6 })
+      .isString()
+      .withMessage("OTP must be a 6-digit numeric code"),
+  ],
+  TransportController.goodsCollectedTransportRide
+);
+
+router.post(
+  "/goods-delivered",
+  [
+    authDriver,
+    body("rideId").isMongoId().withMessage("Not a valid Ride ID"),
+    body("status")
+      .isIn([
+        "Waiting For Driver",
+        "Accepted",
+        "Goods Collected",
+        "En-route",
+        "Goods Delivered",
+      ])
+      .withMessage("Status is not valid"),
+    body("destinationOtp")
+      .isLength({ min: 6, max: 6 })
+      .isString()
+      .withMessage("OTP must be a 6-digit numeric code"),
+  ],
+  TransportController.goodsDeliveredTransportRide
+);
+
+router.get('/user-rides',
   authUser,
   TransportController.getAllUserRides
+);
+
+router.get("/driver-current-ride",
+  authDriver,
+  TransportController.getCurrentDriverRide
 );
 
 export default router;

@@ -4,7 +4,7 @@ const TransportSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "user", 
+      ref: "user",
       required: true,
     },
     driver: {
@@ -12,27 +12,51 @@ const TransportSchema = new mongoose.Schema(
       ref: "driver"
     },
     origin: {
-      type: String,
-      required: true
+      address: {
+        type: String,
+        required: true,
+      },
+      coordinates: {
+        lat: {
+          type: Number,
+          required: true
+        },
+        lng: {
+          type: Number,
+          required: true
+        },
+      }
     },
     destination: {
-      type: String,
-      required: true
+      address: {
+        type: String,
+        required: true,
+      },
+      coordinates: {
+        lat: {
+          type:Number,
+          required: true
+        },
+        lng: {
+          type:Number,
+          required: true
+        },
+      }
     },
     distance: {
-      type: Number, 
+      type: Number,
       required: true
     },
     estimatedTime: {
-      type: Number, 
+      type: Number,
       required: true,
     },
     goodsDescription: {
-      type: String, 
+      type: String,
       required: true,
     },
     weight: {
-      type: Number, 
+      type: Number,
       required: true
     },
     status: {
@@ -46,28 +70,28 @@ const TransportSchema = new mongoose.Schema(
       ],
       default: "Waiting For Driver",
     },
-    price : {
+    price: {
       type: Number, // Price for the transport service
       required: true,
     },
     paymentId: {
-      type: String, 
+      type: String,
     },
     orderId: {
-      type: String, 
+      type: String,
     },
     signature: {
-      type: String, 
+      type: String,
     },
-    originOtp:{
-      type:String,
+    originOtp: {
+      type: String,
       required: true,
-      select:false
+      select: false
     },
-    destinationOtp:{
-      type:String,
+    destinationOtp: {
+      type: String,
       required: true,
-      select:false
+      select: false
     }
   },
   {
@@ -78,3 +102,4 @@ const TransportSchema = new mongoose.Schema(
 const TransportModel = mongoose.model("Transport", TransportSchema);
 
 export default TransportModel;
+

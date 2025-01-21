@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useMemo} from "react";
 import {
   GoogleMap,
   useJsApiLoader,
@@ -17,6 +17,9 @@ const mapContainerStyle = {
 
 const defaultCenter = { lat: 20.5937, lng: 78.9629 }; // Default location: India
 
+// Define the libraries array outside the component to avoid re-creating it
+const libraries = ["places"];
+
 const MapComponent = ({ origin, destination }) => {
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [distance, setDistance] = useState("");
@@ -27,10 +30,12 @@ const MapComponent = ({ origin, destination }) => {
 
   const token = localStorage.getItem("token");
 
-  // Load Google Maps API
-  const { isLoaded, loadError } = useJsApiLoader({
+  const loaderOptions = {
     googleMapsApiKey: GOOGLE_MAP_API_KEY,
-  });
+    libraries
+  };
+  
+    const { isLoaded,loadError } = useJsApiLoader(loaderOptions);
 
   // Utility function to fetch coordinates using backend API
   const fetchCoordinates = async (address, setCoords) => {

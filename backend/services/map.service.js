@@ -7,8 +7,6 @@ export const getAddressCoordinates = async (address) => {
     const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;
     try {
         const response = await axios.get(url);
-        // console.log(response);
-        // Check if the response status is OK and results are available
         if (response.data.status === "OK" && response.data.results.length > 0) {
             const location = response.data.results[0].geometry.location;
             return {
@@ -79,21 +77,24 @@ export const getAutoCompleteSuggestions = async(input) => {
     }
 }
 
-export const getDriversInRadius = async (lat, lng, radius) => {
+export const getAllAvailableDriversInRadius = async (lat, lng, radius) => {
     try {
       // Convert radius from meters to radians (1 degree ≈ 111,320 meters)
       const radiusInRadians = radius / 6371;  // Earth's radius in meters
-  
-      const drivers = await driverModel.find({
+      
+      const query = {
         location: {
           $geoWithin: {
             $centerSphere: [
               [lat, lng], 
-              radiusInRadians  // Radius in radians
+              radiusInRadians  
             ]
           }
-        }
-      });
+        },
+        status: "available"
+      }
+      
+      const drivers = await driverModel.find(query);
   
       return drivers; 
     } catch (error) {

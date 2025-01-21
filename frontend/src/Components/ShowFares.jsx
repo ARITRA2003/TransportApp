@@ -47,8 +47,8 @@ const ShowFares = ({ weight, goodsDescription, origin, destination }) => {
             const payload = {
                 vehicleType,
                 weight,
-                origin,
-                destination,
+                originAddress: origin,
+                destinationAddress: destination,
                 goodsDescription
             };
             // console.log(payload);
