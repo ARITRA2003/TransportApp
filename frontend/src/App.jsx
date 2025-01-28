@@ -1,6 +1,5 @@
 import React from 'react'
 import { Route, Routes } from "react-router-dom"
-import { v4 as uuidv4 } from 'uuid';
 import UserLogin from './screens/UserLogin'
 import UserSignUp from './screens/UserSignUp'
 import DriverLogin from './screens/DriverLogin'
