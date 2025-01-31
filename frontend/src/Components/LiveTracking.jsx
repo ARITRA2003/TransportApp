@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { GoogleMap, Marker, DirectionsRenderer, useJsApiLoader } from "@react-google-maps/api";
 
-// Define the libraries array outside the component to avoid re-creating it
 const libraries = ["places"];
-
 const GOOGLE_MAP_API_KEY = import.meta.env.VITE_GOOGLE_MAP_API;
 
 const LiveTracking = ({ driverLocation, origincoords, destinationcoords, status }) => {
@@ -46,43 +44,51 @@ const LiveTracking = ({ driverLocation, origincoords, destinationcoords, status 
     };
 
     calculateRoute();
-  }, [isLoaded, driverLocation,origincoords,destinationcoords,status]);
+  }, [isLoaded, driverLocation, origincoords, destinationcoords, status]);
 
-  if (!isLoaded) return <div className="text-center mt-4">Loading...</div>;
+  if (!isLoaded) return <div className="text-center mt-4 text-white">Loading map...</div>;
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md">
+    <div className="bg-gray-800 p-4 rounded-lg shadow-xl border border-gray-700">
       {/* Route Details */}
-      <div className="mb-4">
-        <h4 className="text-lg font-semibold mb-2">Route Details</h4>
-        <p className="text-gray-700">Distance: <span className="font-medium">{distance}</span></p>
-        <p className="text-gray-700">Estimated Duration: <span className="font-medium">{duration}</span></p>
+      <div className="mb-6 bg-gray-700 p-4 rounded-lg">
+        <h4 className="text-lg font-semibold mb-3 text-gray-300">Route Information</h4>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <p className="text-gray-400">Distance</p>
+            <p className="text-white font-medium">{distance}</p>
+          </div>
+          <div>
+            <p className="text-gray-400">Estimated Duration</p>
+            <p className="text-white font-medium">{duration}</p>
+          </div>
+        </div>
       </div>
 
-      {/* Map */}
-      <div className="h-96">
+      {/* Map Container */}
+      <div className="h-96 rounded-lg overflow-hidden border border-gray-700">
         <GoogleMap
-          key={`${driverLocation.lat}-${driverLocation.lng}-${status}`}  // Unique key based on driver location and status
+          key={`${driverLocation.lat}-${driverLocation.lng}-${status}`}
           center={driverLocation || origincoords}
           zoom={14}
           mapContainerStyle={{ width: "100%", height: "100%" }}
         >
-          {/* Driver Location Marker */}
+          {/* Driver Marker */}
           {driverLocation && (
             <Marker
               position={driverLocation}
               icon={{
-                url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+                url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
               }}
             />
           )}
 
-          {/* Origin Marker (if En-route status) */}
+          {/* Origin Marker */}
           {status === "En-route" && origincoords && (
             <Marker
               position={origincoords}
               icon={{
-                url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+                url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png",
               }}
             />
           )}
@@ -92,13 +98,26 @@ const LiveTracking = ({ driverLocation, origincoords, destinationcoords, status 
             <Marker
               position={destinationcoords}
               icon={{
-                url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png",
               }}
             />
           )}
 
-          {/* Render Route */}
-          {directionsResponse && <DirectionsRenderer directions={directionsResponse} />}
+          {/* Route Renderer */}
+          {directionsResponse && (
+            <DirectionsRenderer 
+              directions={directionsResponse}
+              options={{
+                polylineOptions: {
+                  strokeColor: "#3b82f6",
+                  strokeWeight: 5,
+                },
+                markerOptions: {
+                  visible: false
+                }
+              }}
+            />
+          )}
         </GoogleMap>
       </div>
     </div>

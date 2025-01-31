@@ -40,7 +40,7 @@ const UserTrackOrders = () => {
 
     // Event listeners for socket updates
     const handleConfirmedRideUpdate = (data) => {
-      console.log(data);
+      // alert("Ride Confirmed");
       setRides((prevRides) =>
         prevRides.map((ride) => (ride._id === data._id ? data : ride))
       );
@@ -51,6 +51,7 @@ const UserTrackOrders = () => {
     };
 
     const handleRideStatusUpdate = (data) => {
+      alert("Ride Status Updated");
       setRides((prevRides) =>
         prevRides.map((ride) =>
           ride._id === data._id ? { ...ride, status: data.status } : ride
@@ -67,7 +68,7 @@ const UserTrackOrders = () => {
 
     const handleRideDriverLocationUpdate = (data) => {
       const { location, _id } = data;
-      console.log(location);
+      
       setRides((prevRides) =>
         prevRides.map((ride) =>
           ride._id === _id
@@ -89,12 +90,6 @@ const UserTrackOrders = () => {
     socket.on("ride-status-updated", handleRideStatusUpdate);
     socket.on("driver-location-update", handleRideDriverLocationUpdate);
 
-    // Cleanup listeners on unmount
-    // return () => {
-    //   socket.off("confirmed-ride", handleConfirmedRideUpdate);
-    //   socket.off("ride-status-updated", handleRideStatusUpdate);
-    //   socket.off("driver-location-update", handleRideDriverLocationUpdate);
-    // };
   }, [socket, selectedRide,rides]);
 
   const openModal = (ride) => {

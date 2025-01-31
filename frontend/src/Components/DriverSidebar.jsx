@@ -31,7 +31,7 @@ const Sidebar = () => {
   return (
     <div className="w-1/4 bg-gray-700 p-6 flex flex-col justify-between">
       <div>
-        <h2 className="text-2xl font-bold mb-8 text-yellow-400">Goods TransPort</h2>
+        <h2 className="text-2xl font-bold mb-8 text-yellow-400">🚚 Goods TransPort</h2>
         <nav className="space-y-4">
           <button
             onClick={() => navigate("/driver-home")}

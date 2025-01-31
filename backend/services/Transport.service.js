@@ -67,7 +67,7 @@ export const confirmTransportRideService = async (driverId, rideId) => {
     "driver": driverId
   });
 
-  // await DriverService.updateDriver(driverId,{"status":"unavailable"}) 
+  await DriverService.updateDriver(driverId,{"status":"unavailable"}) 
 
   const ride = await TransportModel.findById(rideId).
     populate('user').
@@ -138,6 +138,8 @@ export const goodsDeliveredTransportRideService = async (rideId, status, destina
     // Update the ride status to 'Goods Delivered'
     ride.status = status;
     await ride.save();
+
+    await DriverService.updateDriver(driverId,{"status":"available"})
 
     // Return populated ride with user details
     return ride;

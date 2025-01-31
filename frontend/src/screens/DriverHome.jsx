@@ -9,7 +9,6 @@ import RideProgressBar from "../Components/RideProgressBar";
 import DriverRideDetails from "../Components/DriverRideDetails";
 import LiveTracking from "../Components/LiveTracking";
 import OtpComponent from "../Components/OtpComponent";
-import MapComponent from "../Components/MapComponent"
 
 const DriverHome = () => {
   const { socket } = useContext(SocketContext);
@@ -33,13 +32,6 @@ const DriverHome = () => {
               lat: position.coords.latitude,
               lng: position.coords.longitude,
             };
-            // console.log(ride);
-            // console.log({
-            //   userId: ride?.user._id || null,
-            //   driverId:driver._id,
-            //   rideId:ride?._id || null,
-            //   location
-            // });
             socket.emit("update-location-driver", {
               userId: ride?.user._id || null,
               driverId:driver._id,
@@ -57,7 +49,7 @@ const DriverHome = () => {
       }
     };
 
-    const locationInterval = setInterval(updateLocation, 5000);
+    const locationInterval = setInterval(updateLocation, 10000);
 
     // Listen for new ride event
     socket.on("new-ride", (data) => {
